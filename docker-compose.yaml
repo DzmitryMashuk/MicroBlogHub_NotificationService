@@ -1,0 +1,37 @@
+version: '3.8'
+
+services:
+  php_microbloghub_notification:
+    container_name: php_microbloghub_notification-container
+    build:
+      context: .
+      dockerfile: docker/php/Dockerfile
+    volumes:
+      - ./app:/var/www/NotificationService
+      - ./docker/php/php.ini:/usr/local/etc/php/php.ini
+    networks:
+      - microbloghub-network
+    restart: unless-stopped
+    tty: true
+
+  nginx_microbloghub_notification:
+    container_name: nginx_microbloghub_notification-container
+    image: nginx:latest
+    ports:
+      - "9004:80"
+    volumes:
+      - ./app:/var/www/NotificationService
+      - ./docker/nginx/default.conf:/etc/nginx/conf.d/default.conf
+    depends_on:
+      - php_microbloghub_notification
+    networks:
+      - microbloghub-network
+    restart: unless-stopped
+    tty: true
+
+volumes:
+  mysql_data:
+
+networks:
+  microbloghub-network:
+    driver: bridge

@@ -1,0 +1,9 @@
+{
+  "name": "microbloghub/notification",
+  "type": "project",
+  "description": "Microservice for send notification",
+  "require": {
+    "php": "^8.3",
+    "php-amqplib/php-amqplib": "^3.7"
+  }
+}
